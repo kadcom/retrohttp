@@ -298,5 +298,6 @@ $RECYCLE.BIN/
 
 # Build 
 build/*
-
+compile_commands.json
+.cache/*
 # End of https://www.toptal.com/developers/gitignore/api/windows,macos,linux,visualstudiocode,go,intellij+all,vim,c,c++
