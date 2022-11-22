@@ -53,12 +53,13 @@ int http_alloc_buffer(struct http_buffer_t *buf, const size_t len, const bool is
 
 int http_grow_buffer(struct http_buffer_t *buf, const size_t bylen) {
   const size_t aligned = aligned_size(buf->len + bylen);
+  void *arena;
+
   if (aligned < buf->size) {
     /* do nothing, buffer still has some size */ 
     return HTTP_SUCCESS;
   }
 
-  void *arena;
 #if defined(WIN32) || defined(_WIN32)
   arena = VirtualAlloc(buf->buf, aligned, MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE);
 #else
