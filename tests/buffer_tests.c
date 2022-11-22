@@ -1,7 +1,8 @@
 #include <check.h>
 
-#include "../mhttp.h"
 #include <unistd.h>
+
+#include <mhttp.h>
 
 START_TEST (buffer_tests)
 {
