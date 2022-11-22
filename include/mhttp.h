@@ -7,7 +7,9 @@
 #include <strsafe.h>
 
 #if defined (_MSC_VER)
+#ifndef bool 
 typedef _Bool bool;
+#endif
 #elif defined(__WATCOMC__)
 #include <stdbool.h>
 #endif 
