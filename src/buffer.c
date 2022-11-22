@@ -30,7 +30,7 @@ static inline size_t aligned_size(const size_t len) {
 }
 
 
-int http_alloc_buffer(struct http_buffer_t *buf, const size_t len, const bool is_zero) {
+int http_alloc_buffer(struct http_buffer_t *buf, const size_t len, const int is_zero) {
   const size_t aligned = aligned_size(len);
   void *arena;
 #if defined(WIN32) || defined(_WIN32)
