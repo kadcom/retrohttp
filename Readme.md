@@ -1,4 +1,4 @@
-# mHTTP Parser  
+# RetroHTTP Parser  
 
 A very small naive http parser for [W32HTTP](https://github.com/retrocodingnet/W32HttpServer). Contrast with the 
 original project. This library is designed to be fully portable and debuggable.
@@ -8,7 +8,7 @@ Just for fun, this library will be licensed as GPLv3.
 Copyright (c) 2022 Didiet Noor 
 
 ```
-mHTTP Parser, small naive parser
+RetroHTTP Parser, small naive parser
 
 Copyright (c) 2022 Didiet Noor
 

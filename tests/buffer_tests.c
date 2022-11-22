@@ -1,10 +1,11 @@
+#include "buffer.h"
 #include <check.h>
 
 #include <unistd.h>
 
 #include <mhttp.h>
 
-START_TEST (buffer_tests)
+START_TEST (buffer_allocation_tests)
 {
   struct http_buffer_t buf;
   http_alloc_buffer(&buf, 20, true);
@@ -34,13 +35,38 @@ START_TEST (buffer_tests)
 }
 END_TEST
 
+START_TEST(buffer_growth_test)
+{
+  const size_t initial_size = 50;
+  const size_t next_size = 200;
+  struct http_buffer_t buf; 
+  http_alloc_buffer(&buf, initial_size,true);
+
+  ck_assert_uint_eq(buf.len, initial_size);
+  ck_assert_uint_eq(buf.size, getpagesize());
+  ck_assert_ptr_nonnull(buf.buf);
+
+  http_grow_buffer(&buf, next_size);
+  ck_assert_uint_eq(buf.len, initial_size + next_size);
+  ck_assert_uint_eq(buf.size, getpagesize());
+  ck_assert_ptr_nonnull(buf.buf);
+
+  http_grow_buffer(&buf, getpagesize());
+  ck_assert_uint_eq(buf.len, initial_size + next_size + getpagesize());
+  ck_assert_uint_eq(buf.size, 2 * getpagesize());
+  ck_assert_ptr_nonnull(buf.buf);
+
+}
+END_TEST
+
 Suite *buffer_suite(void) {
   Suite *s;
-  TCase *tc_buffer;
+  TCase *tc_buffer, *tc_growth;
 
   s = suite_create("buffers");
-  tc_buffer = tcase_create("allocation");
-  tcase_add_test(tc_buffer, buffer_tests);
+  tc_buffer = tcase_create("allocation_growth");
+  tcase_add_test(tc_buffer, buffer_allocation_tests);
+  tcase_add_test (tc_buffer, buffer_growth_test);
   suite_add_tcase(s, tc_buffer);
 
   return s;
