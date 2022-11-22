@@ -2,6 +2,7 @@
 #define MHTTP_H 
 
 #if defined(WIN32) || defined(_WIN32)
+#include <winsock2.h>
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #endif
