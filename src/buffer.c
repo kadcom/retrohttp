@@ -62,12 +62,18 @@ int http_grow_buffer(struct http_buffer_t *buf, const size_t bylen) {
 
 #if defined(WIN32) || defined(_WIN32)
   arena = VirtualAlloc(buf->buf, aligned, MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE);
+  
+  if (NULL == arena) {
+    return HTTP_ERR_GENERIC;
+  }
+
 #else
   arena = mmap(buf->buf, aligned, PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0);
-#endif
+
   if (MAP_FAILED == arena) {
     return HTTP_ERR_GENERIC;
   }
+#endif
 
   buf->buf = arena; 
   buf->size = aligned; 
