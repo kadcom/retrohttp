@@ -34,10 +34,14 @@ enum {
 };
 
 enum {
-  HTTP_PARSER_STATE_METHOD, 
-  HTTP_PARSER_STATE_PATH, 
-  HTTP_PARSER_STATE_VERSION,
-  HTTP_PARSER_STATE_HEADERS,
+  HTTP_PARSER_STATE_BEGIN_METHOD = 0,
+  HTTP_PARSER_STATE_END_METHOD, 
+  HTTP_PARSER_STATE_BEGIN_PATH, 
+  HTTP_PARSER_STATE_END_PATH,
+  HTTP_PARSER_STATE_BEGIN_VERSION,
+  HTTP_PARSER_STATE_END_VERSION,
+  HTTP_PARSER_STATE_BEGIN_HEADERS,
+  HTTP_PARSER_STATE_END_HEADERS,
 };
 
 enum {
@@ -45,14 +49,20 @@ enum {
   HTTP_ERR_GENERIC = -1,
 };
 
-struct http_parser_t {
-  int state;
-};
-
 struct http_buffer_t {
   byte_t *buf;
   size_t len;
   size_t size;
+};
+
+
+struct http_parser_t {
+  int state;
+  size_t token_processed;
+  size_t leftovers;
+
+  struct http_buffer_t current; 
+  struct http_buffer_t left;
 };
 
 #define HTTP_MAX_PATH 2048
