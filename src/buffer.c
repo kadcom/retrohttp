@@ -11,7 +11,7 @@
 #define DEFAULT_PAGE_SIZE 4096
 
 #if defined(_WIN32) || defined(WIN32)
-static inline size_t getpagesize() {
+static size_t getpagesize() {
   SYSTEM_INFO si;
   GetSystemInfo(&si);
 
@@ -19,7 +19,7 @@ static inline size_t getpagesize() {
 }
 #endif
 
-static inline size_t aligned_size(const size_t len) {
+static size_t aligned_size(const size_t len) {
   size_t pg_size = getpagesize();
   if (0 == len) {
     return 0;
