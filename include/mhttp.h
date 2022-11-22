@@ -5,13 +5,15 @@
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <strsafe.h>
+typedef _Bool bool;
+#else
+#include <stdbool.h>
 #endif
 
 #include <string.h>
 #include <stdio.h> 
 #include <stdlib.h>
 #include <stddef.h>
-#include <stdbool.h>
 
 #ifndef byte_t 
 typedef unsigned char byte_t; 

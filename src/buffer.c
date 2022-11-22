@@ -8,8 +8,6 @@
 #include <unistd.h>
 #endif
 
-#include <stdbool.h>
-
 #define DEFAULT_PAGE_SIZE 4096
 
 #if defined(_WIN32) || defined(WIN32)
