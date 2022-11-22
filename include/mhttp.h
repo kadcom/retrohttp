@@ -5,7 +5,13 @@
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <strsafe.h>
+
+#if defined (_MSC_VER)
 typedef _Bool bool;
+#elif defined(__WATCOMC__)
+#include <stdbool.h>
+#endif 
+
 #else
 #include <stdbool.h>
 #endif
