@@ -1,3 +1,4 @@
+#include "buffer.h"
 #include "mhttp.h"
 
 #if defined (WIN32) || defined(_WIN32)
@@ -51,8 +52,8 @@ int http_alloc_buffer(struct http_buffer_t *buf, const size_t len, const int is_
   return HTTP_SUCCESS;
 }
 
-int http_grow_buffer(struct http_buffer_t *buf, const size_t bylen) {
-  const size_t aligned = aligned_size(buf->len + bylen);
+int http_grow_buffer(struct http_buffer_t *buf, const size_t new_len) {
+  const size_t aligned = aligned_size(new_len);
   void *arena;
 
   if (aligned < buf->size) {
@@ -77,9 +78,22 @@ int http_grow_buffer(struct http_buffer_t *buf, const size_t bylen) {
 
   buf->buf = arena; 
   buf->size = aligned; 
-  buf->len += bylen;
+  buf->len = new_len;
 
   return HTTP_SUCCESS;
+}
+
+int http_attach_buffer(struct http_buffer_t *buf, void *src, const size_t len) {
+  buf->buf = src; 
+  buf->len = len; 
+
+  if (len % getpagesize() == 0) {
+    buf->size = len;
+    return HTTP_SUCCESS; 
+  }
+
+  buf->size = aligned_size(len);
+  return http_grow_buffer(buf, len);
 }
 
 int http_free_buffer(struct http_buffer_t *buf) {
@@ -97,4 +111,13 @@ int http_free_buffer(struct http_buffer_t *buf) {
   memset(buf, 0, sizeof(struct http_buffer_t));
 
   return HTTP_SUCCESS;
+}
+
+
+size_t http_slack_buffer(struct http_buffer_t *buf) {
+  return buf->size - buf->len;
+}
+
+int http_is_full_buffer(struct http_buffer_t *buf) {
+  return http_slack_buffer(buf) == 0;
 }

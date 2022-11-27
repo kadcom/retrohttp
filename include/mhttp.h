@@ -69,10 +69,8 @@ struct http_buffer_t {
 struct http_parser_t {
   int state;
   size_t token_processed;
-  size_t leftovers;
 
-  struct http_buffer_t current; 
-  struct http_buffer_t left;
+  struct http_buffer_t buffer; 
 };
 
 #define HTTP_MAX_PATH 2048
@@ -82,6 +80,11 @@ struct http_prefix_t {
   int version;
 
   struct http_buffer_t headers;
+};
+
+struct http_req_t {
+  struct http_prefix_t prefix;
+  struct http_buffer_t entity;
 };
 
 #include "buffer.h"
