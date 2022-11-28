@@ -1,14 +1,14 @@
+#include "mhttp.h"
 #include "buffer.h"
 #include <check.h>
 
 #include <unistd.h>
-
 #include <mhttp.h>
 
 START_TEST (buffer_allocation_tests)
 {
   struct http_buffer_t buf;
-  http_alloc_buffer(&buf, 20, true);
+  http_alloc_buffer(&buf, 20);
 
   ck_assert_uint_eq(buf.len, 20);
   ck_assert_uint_eq(buf.size, getpagesize());
@@ -20,13 +20,13 @@ START_TEST (buffer_allocation_tests)
   ck_assert_uint_eq(buf.size, 0);
   ck_assert_ptr_null(buf.buf);
 
-  http_alloc_buffer(&buf, getpagesize(), true); 
+  http_alloc_buffer(&buf, getpagesize()); 
   ck_assert_uint_eq(buf.len, getpagesize());
   ck_assert_uint_eq(buf.size, getpagesize());
 
   http_free_buffer(&buf);
 
-  http_alloc_buffer(&buf, getpagesize() + 1, true); 
+  http_alloc_buffer(&buf, getpagesize() + 1); 
   ck_assert_uint_eq(buf.len,  getpagesize() + 1);
   ck_assert_uint_eq(buf.size, 2 * getpagesize());
 
@@ -38,21 +38,23 @@ END_TEST
 START_TEST(buffer_growth_test)
 {
   const size_t initial_size = 50;
-  const size_t next_size = 200;
+  const size_t new_size = 200;
+  const size_t new_extra_size = getpagesize() + initial_size;
+
   struct http_buffer_t buf; 
-  http_alloc_buffer(&buf, initial_size,true);
+  http_alloc_buffer(&buf, initial_size);
 
   ck_assert_uint_eq(buf.len, initial_size);
   ck_assert_uint_eq(buf.size, getpagesize());
   ck_assert_ptr_nonnull(buf.buf);
 
-  http_grow_buffer(&buf, next_size);
-  ck_assert_uint_eq(buf.len, initial_size + next_size);
+  http_grow_buffer(&buf, new_size);
+  ck_assert_uint_eq(buf.len, new_size);
   ck_assert_uint_eq(buf.size, getpagesize());
   ck_assert_ptr_nonnull(buf.buf);
 
-  http_grow_buffer(&buf, getpagesize());
-  ck_assert_uint_eq(buf.len, initial_size + next_size + getpagesize());
+  http_grow_buffer(&buf, new_extra_size);
+  ck_assert_uint_eq(buf.len, new_extra_size);
   ck_assert_uint_eq(buf.size, 2 * getpagesize());
   ck_assert_ptr_nonnull(buf.buf);
 

@@ -3,12 +3,12 @@
 
 #if defined(_MSC_VER)
 #if (_MSC_VER <= 1200)
-#define MHTTP_INLINE __inline 
+#define RHTTP_INLINE __inline 
 #else 
-#define MHTTP_INLINE inline 
+#define RHTTP_INLINE inline 
 #endif
 #else
-#define MHTTP_INLINE inline
+#define RHTTP_INLINE inline
 #endif
 
 #if defined(WIN32) || defined(_WIN32)

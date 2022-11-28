@@ -4,15 +4,15 @@
 #if defined (WIN32) || defined(_WIN32)
 #include <windows.h>
 
-static MHTTP_INLINE void mem_zero(void *p, const size_t len) {
+static RHTTP_INLINE void mem_zero(void *p, const size_t len) {
   ZeroMemory(p, len);
 }
 
-static MHTTP_INLINE void mem_copy(void *dest, void *src, const size_t len) {
+static RHTTP_INLINE void mem_copy(void *dest, void *src, const size_t len) {
   CopyMemory(dest, src, len);
 }
 
-static MHTTP_INLINE void *mem_realloc(void *old_addr, const size_t new_len) {
+static RHTTP_INLINE void *mem_realloc(void *old_addr, const size_t new_len) {
   return VirtualAlloc(old_addr, new_len, MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE); 
 }
 
@@ -21,15 +21,15 @@ static MHTTP_INLINE void *mem_realloc(void *old_addr, const size_t new_len) {
 #include <sys/mman.h>
 #include <memory.h>
 
-static MHTTP_INLINE void mem_zero(void *p, const size_t len) {
+static RHTTP_INLINE void mem_zero(void *p, const size_t len) {
   memset(p, 0, len);
 }
 
-static MHTTP_INLINE void mem_copy(void *dest, void *src, const size_t len) {
+static RHTTP_INLINE void mem_copy(void *dest, void *src, const size_t len) {
   memmove(dest, src, len);
 }
 
-static MHTTP_INLINE void *mem_realloc(void *old_addr, const size_t new_len) {
+static RHTTP_INLINE void *mem_realloc(void *old_addr, const size_t new_len) {
   return mmap(old_addr, new_len, PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, 
       -1, 0);
 }
