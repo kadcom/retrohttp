@@ -89,4 +89,16 @@ struct http_req_t {
 
 #include "buffer.h"
 
+#if defined(uint8_t) 
+typedef uint8_t u8;
+#elif defined(__int8)
+typedef unsigned __int8 u8; 
+#else 
+typedef unsigned char u8;
+#endif
+
+#ifndef strnicmp 
+#define strnicmp strncasecmp
+#endif
+
 #endif  /* MHTTP_H */
